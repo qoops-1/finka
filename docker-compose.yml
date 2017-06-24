@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image: postgres
+
+  app:
+    build: .
+    command: /finka/docker-entrypoint.sh
+    volumes:
+      - .:/finka
+      - bbox:/box
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - box
+
+  box:
+    image: busybox
+    volumes:
+      - bbox:/box
+
+volumes:
+  bbox:
