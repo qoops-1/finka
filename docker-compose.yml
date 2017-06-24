@@ -3,9 +3,9 @@ services:
   db:
     image: postgres
 
-  app:
+  web:
     build: .
-    command: /finka/docker-entrypoint.sh
+    command: ["/finka/docker-entrypoint.sh", "5432"]
     volumes:
       - .:/finka
       - bbox:/box

@@ -1,4 +1,10 @@
 #!/bin/bash
+set -e
+
+host="$1"
+while ! nc -z db $host; do sleep 3; done
+
 bundle check || bundle install
-bin/setup
+rm -rf tmp
+bundle exec rails db:setup
 bundle exec rails s -p 3000 -b '0.0.0.0'

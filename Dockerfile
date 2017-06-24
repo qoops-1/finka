@@ -5,27 +5,12 @@ FROM ruby:latest
 ## -----------------------------------------------------------------------------
 RUN set -xe \
   && apt-get update -qq \
-  && apt-get -y --no-install-recommends install \
-    apt-transport-https \
+  && apt-get -y install \
     build-essential \
-    ca-certificates \
-    curl \
-    git \
-    htop \
-    less \
-    libcurl4-openssl-dev \
-    libmysqlclient-dev \
     libpq-dev \
-    lsb-release \
     nodejs \
-    make \
-    rsyslog \
-    software-properties-common \
-    ssh \
-    sudo \
-    tmux \
-    vim-nox \
-    wget
+    netcat \
+    tmux
 
 ENV app /finka
 RUN mkdir $app
@@ -35,4 +20,3 @@ ENV BUNDLE_PATH /box
 ADD . $app
 
 RUN mv $app/.tmux.conf /root/
-ENTRYPOINT ["/bin/bash"]
