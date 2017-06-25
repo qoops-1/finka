@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     resource :session, only: [:create, :destroy]
     
     resources :conversations, only: [:show, :create]
-    resources :users, only: [:show, :create]
+    resource :user, only: [:show]
     resources :participants, only: [:create, :destroy]
     resources :messages, only: [:create]
   end
