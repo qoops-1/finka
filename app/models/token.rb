@@ -1,52 +1,50 @@
 class Token < ActiveModelSerializers::Model
   ALG = 'HS256'
   # need for AMS
-  attr_reader :token, :pin_code
+  attr_reader :token, :payload
   def attributes
     {
       token: @token,
-      pin_code: @pin_code
+      payload: @payload
     }
   end
 
-  def initialize(params)
-    if params[:user_id]
-      @user_id = params[:user_id]
+  # receives payload as a hash or a JWT token
+  def initialize(parameter)
+    if parameter.is_a? Hash
+      @payload = parameter
       encode
-    elsif params[:token]
-      @token = params[:token]
+    else
+      @token = parameter
       decode
     end
   end
 
   def pin
-    @decoded["pin"]
+    @payload[:pin]
   end
 
   def verified
-    @decoded["verified"]
+    @payload[:verified]
   end
 
-  def verified=(params)
-    encode verified: params
+  def verified=(value)
+    encode verified: value
   end
 
   private
 
   def encode(params={})
-    to_encrypt = { 
-      user_id: @user_id,
-      pin: params[:pin] || generate_pin,
-      verified: params[:verified] || false
-    }
+    params.each { |k, v| @payload[k] = v }
+    @payload[:pin] ||= generate_pin
+    @payload[:verified] ||= false
 
-    @pin_code = to_encrypt[:pin]
-    @token = JWT.encode(to_encrypt, secret, ALG)
+    @payload = @payload
+    @token = JWT.encode(@payload, secret, ALG)
   end
 
   def decode
-    @decoded ||= JWT.decode(@token, secret, ALG).first
-    @user_id = @decoded["user_id"]
+    @payload = JWT.decode(@token, secret, ALG).first.symbolize_keys
   end
 
   def secret

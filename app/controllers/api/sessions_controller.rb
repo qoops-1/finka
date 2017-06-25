@@ -20,6 +20,6 @@ class Api::SessionsController < ApplicationController
   private
 
   def set_token
-    @token = Token.new token: params[:token]
+    @token = Token.new params[:token]
   end
 end
