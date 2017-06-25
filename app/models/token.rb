@@ -17,7 +17,6 @@ class Token < ActiveModelSerializers::Model
   end
 
   def pin
-    puts @decoded["pin"]
     @decoded["pin"]
   end
 
@@ -38,6 +37,7 @@ class Token < ActiveModelSerializers::Model
       verified: params[:verified] || false
     }
 
+    puts "______PIN__________: #{to_encrypt[:pin]}}"
     @token = JWT.encode(to_encrypt, secret, ALG)
   end
 
