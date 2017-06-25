@@ -20,16 +20,8 @@ class Token < ActiveModelSerializers::Model
     end
   end
 
-  def pin
-    @payload[:pin]
-  end
-
-  def verified
-    @payload[:verified]
-  end
-
-  def verified=(value)
-    encode verified: value
+  def set(params)
+    encode params    
   end
 
   private
