@@ -20,7 +20,6 @@ class Api::ConversationsController < ApplicationController
     end
 
     def parse_conv_with_participants
-      params.require(:participants)
-      params.require(:conversation).require(:title)
+      params.require(:title, :participants)
     end
 end
