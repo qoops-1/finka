@@ -1,5 +1,5 @@
-class Api::SessionsController < ApplicationController
-  before_action :set_token
+class Api::SessionsController < Api::BaseController
+  before_action :get_token
 
   def create
     if @token.payload[:verified]
@@ -15,11 +15,5 @@ class Api::SessionsController < ApplicationController
   def destroy
     @example.destroy
     render json: :ok
-  end
-
-  private
-
-  def set_token
-    @token = Token.new params[:token]
   end
 end

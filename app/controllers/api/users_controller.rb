@@ -1,7 +1,7 @@
-class Api::UsersController < ApplicationController
-  
+class Api::UsersController < Api::BaseController
+  before_action :authenticate_user!
+
   def show
-    render json: User.find(params.require(:id))
-  end
-  
+    render json: current_user
+  end  
 end
