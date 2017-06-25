@@ -1,6 +1,5 @@
 class Api::ConversationsController < ApplicationController
   before_action :set_conversation, only: [:show]
-  before_action :parse_conv_with_participants, only: [:create]
   
   def show 
     render json: @convrs

@@ -2,10 +2,10 @@ class Api::SessionsController < ApplicationController
   before_action :set_token
 
   def create
-    if @token.verified
+    if @token.payload[:verified]
       render json: @token 
-    elsif @token.pin == params[:pin]
-      @token.verified = true
+    elsif @token.payload[:pin] == params[:pin]
+      @token.set verified: true
       render json: @token
     else
       render json: @token, status: :unprocessable_entity
@@ -20,6 +20,6 @@ class Api::SessionsController < ApplicationController
   private
 
   def set_token
-    @token = Token.new token: params[:token]
+    @token = Token.new params[:token]
   end
 end
