@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     resources :examples, only: api_actions
+    resources :conversations, only: [:show, :create]
   end
 end
