@@ -1,4 +1,4 @@
-class Api::RegistrationsController < ApplicationController
+class Api::RegistrationsController < Api::BaseController
   before_action :find_user, only: [:create, :update, :destroy]
 
   def create

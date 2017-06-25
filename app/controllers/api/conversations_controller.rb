@@ -1,4 +1,4 @@
-class Api::ConversationsController < ApplicationController
+class Api::ConversationsController < Api::BaseController
   before_action :set_conversation, only: [:show]
   
   def show 

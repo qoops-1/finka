@@ -1,4 +1,4 @@
-class Api::ExamplesController < ApplicationController
+class Api::ExamplesController < Api::BaseController
   before_action :find_example, only: [:show, :update, :destroy]
 
   def index
