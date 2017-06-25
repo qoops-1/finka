@@ -43,4 +43,4 @@ class QiwiService
         end
         return JSON.parse(res.body)
     end
-    
+end
