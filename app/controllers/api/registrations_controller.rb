@@ -19,6 +19,6 @@ class Api::RegistrationsController < ApplicationController
   end
 
   def user_params
-    params.permit(:phone)
+    params.permit(:phone, :name)
   end
 end

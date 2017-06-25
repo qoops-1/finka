@@ -1,25 +1,30 @@
 class Api::ConversationsController < ApplicationController
-    before_action :parse_convrs, only: [:show]
-    before_action :parse_conv_with_participants, only: [:create]
-    
-    def show 
-      render json: @convrs
-    end
+  before_action :parse_convrs, only: [:show]
+  before_action :parse_conv_with_participants, only: [:create]
+  
+  def show 
+    render json: {"conversation": @convrs, "participants": @convrs.participants}
+  end
 
-    def create
-      params[:participants].each do |id|
-        Participant.create(id)
+  def create
+    conv = Conversation.create(params[:conversation][:title])
+    params[:users].each do |id|
+      if User.find(id)
+        Participant.create(conversation: conv.id, user: id)
       end
-     Conversation.create(params[:conversation][:title])
     end
-    
-    private
+  end
+  
+  private
 
-    def parse_convrs
-        @convrs = Conversation.find(params[:id]) if params[:id]
+  def parse_convrs
+    if params[:id]
+      @convrs = Conversation.find(params[:id]) 
     end
+  end
 
-    def parse_conv_with_participants
-      params.require(:title, :participants)
-    end
+  def parse_conv_with_participants
+    params.require(:title)
+    params.require(:users)
+  end
 end
