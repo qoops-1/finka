@@ -1,9 +1,12 @@
 class Token < ActiveModelSerializers::Model
   ALG = 'HS256'
   # need for AMS
-  attr_reader :token
+  attr_reader :token, :pin_code
   def attributes
-    { token: @token }
+    {
+      token: @token,
+      pin_code: @pin_code
+    }
   end
 
   def initialize(params)
@@ -37,7 +40,7 @@ class Token < ActiveModelSerializers::Model
       verified: params[:verified] || false
     }
 
-    puts "______PIN__________: #{to_encrypt[:pin]}}"
+    @pin_code = to_encrypt[:pin]
     @token = JWT.encode(to_encrypt, secret, ALG)
   end
 
