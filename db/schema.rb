@@ -35,15 +35,6 @@ ActiveRecord::Schema.define(version: 20170624211626) do
     t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
-  create_table "participants", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "conversation_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["conversation_id"], name: "index_participants_on_conversation_id", using: :btree
-    t.index ["user_id"], name: "index_participants_on_user_id", using: :btree
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "phone"
@@ -52,8 +43,15 @@ ActiveRecord::Schema.define(version: 20170624211626) do
     t.datetime "updated_at",               null: false
   end
 
+  create_table "users_conversations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "conversation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["conversation_id"], name: "index_users_conversations_on_conversation_id", using: :btree
+    t.index ["user_id"], name: "index_users_conversations_on_user_id", using: :btree
+  end
+
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
-  add_foreign_key "participants", "conversations"
-  add_foreign_key "participants", "users"
 end

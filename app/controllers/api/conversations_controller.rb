@@ -1,30 +1,27 @@
 class Api::ConversationsController < ApplicationController
-  before_action :parse_convrs, only: [:show]
+  before_action :set_conversation, only: [:show]
   before_action :parse_conv_with_participants, only: [:create]
   
   def show 
-    render json: {"conversation": @convrs, "participants": @convrs.participants}
+    render json: @convrs
   end
 
   def create
-    conv = Conversation.create(params[:conversation][:title])
-    params[:users].each do |id|
-      if User.find(id)
-        Participant.create(conversation: conv.id, user: id)
-      end
+    conv = Conversation.new conversation_params
+    if conv.save
+      render json: conv
+    else
+      render json: { errors: conv.errors.full_messages, status: :unprocessable_entity }
     end
   end
   
   private
 
-  def parse_convrs
-    if params[:id]
-      @convrs = Conversation.find(params[:id]) 
-    end
+  def set_conversation
+    @convrs = Conversation.find(params[:id]) if params[:id]
   end
 
-  def parse_conv_with_participants
-    params.require(:title)
-    params.require(:users)
+  def conversation_params
+    params.permit(:title, user_ids: [])
   end
 end
