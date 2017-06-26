@@ -9,7 +9,6 @@ Rails.application.routes.draw do
     
     resources :conversations, only: [:show, :create]
     resource :user, only: [:show]
-    resources :participants, only: [:create, :destroy]
     resources :messages, only: [:create]
   end
 end
