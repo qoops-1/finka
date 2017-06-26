@@ -1,4 +1,5 @@
 class Api::RegistrationsController < Api::BaseController
+  serialization_scope :view_context
   before_action :find_user, only: [:create, :update, :destroy]
 
   def create

@@ -19,8 +19,8 @@ class Api::BaseController < ApplicationController
 
   def get_token
     # we accept Authorization=Bearer token
-    auth_values = request.headers["Authorization"].split(" ")
-    if auth_values[0] == "Bearer"
+    auth_values = request.headers["Authorization"]&.split(" ")
+    if !auth_values.nil? && auth_values[0] == "Bearer"
       @token = Token.new auth_values[1]
     else
       @token = nil
