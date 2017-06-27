@@ -8,7 +8,7 @@ gem 'pg', '~> 0.21'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # For serializing json responses
-gem 'active_model_serializers', '~> 0.10.0'
+gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use Capistrano for deployment

@@ -1,23 +1,31 @@
 class Api::ConversationsController < Api::BaseController
+  before_action :authenticate_user!
   before_action :set_conversation, only: [:show]
+
+  def index
+    render json: current_user.conversations
+  end
   
   def show 
-    render json: @convrs
+    render json: @conversations
   end
 
   def create
-    conv = Conversation.new conversation_params
-    if conv.save
-      render json: conv
+    conversation = current_user.conversations.new conversation_params
+    if conversation.save
+      render json: conversation
     else
-      render json: { errors: conv.errors.full_messages, status: :unprocessable_entity }
+      render json: { 
+        errors: conversation.errors.full_messages, 
+        status: :unprocessable_entity 
+      }
     end
   end
   
   private
 
   def set_conversation
-    @convrs = Conversation.find(params[:id]) if params[:id]
+    @conversation = Conversation.find params[:id]
   end
 
   def conversation_params

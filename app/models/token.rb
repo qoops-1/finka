@@ -1,14 +1,6 @@
-class Token < ActiveModelSerializers::Model
-  ALG = 'HS256'
-  # need for AMS
+class Token
   attr_reader :token, :payload
-  def attributes
-    {
-      token: @token,
-      payload: @payload
-    }
-  end
-
+  ALG = 'HS256'
   # receives payload as a hash or a JWT token
   def initialize(parameter)
     if parameter.is_a? Hash

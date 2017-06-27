@@ -1,5 +1,5 @@
 class Api::BaseController < ApplicationController
-
+  
   protected
 
   def current_user

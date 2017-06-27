@@ -7,10 +7,10 @@ Rails.application.routes.draw do
     resource :registration, only: :create
     resource :session, only: [:create, :destroy]
 
-    resources :conversations, only: [:show, :create] do
+    resource :user, only: [:show, :update]
+
+    resources :conversations, only: [:create, :index, :show] do
       resources :transactions, only: :create
     end
-
-    resource :user, only: [:show, :update]
   end
 end
