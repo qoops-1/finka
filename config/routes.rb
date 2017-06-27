@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   # api_actions = [:create, :get, :index, :update, :destroy, :show] # we don't need new and edit since we are using api only
 
   namespace :api, defaults: { format: 'json' } do
-    resource :registration, only: [:create]
+    resource :registration, only: :create
     resource :session, only: [:create, :destroy]
-    
-    resources :conversations, only: [:show, :create]
-    resource :user, only: [:show]
-    resources :messages, only: [:create]
+
+    resources :conversations, only: [:show, :create] do
+      resources :transactions, only: :create
+    end
+
+    resource :user, only: [:show, :update]
   end
 end
