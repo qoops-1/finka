@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170626194415) do
     t.integer  "type"
     t.decimal  "ammount",         precision: 9, scale: 2
     t.integer  "receiver_id"
+    t.boolean  "verified"
     t.index ["conversation_id"], name: "index_transactions_on_conversation_id", using: :btree
     t.index ["user_id"], name: "index_transactions_on_user_id", using: :btree
   end

@@ -2,17 +2,12 @@ class Api::BaseController < ApplicationController
   
   protected
 
-  def current_user
-    authenticate_user!
-    @user
-  end
-
   def authenticate_user!
     get_token
     if !@token
-      render json: { errors: "No token in request", status: :unauthorized }
+      render_errors("No token in request", :unauthorized)
     elsif !@token.payload[:verified]
-      render json: { errors: "Token not verified", status: :unauthorized }
+      render_errors("Token not verified", :unauthorized)
     end
     @user = User.find @token.payload[:user_id]
   end
@@ -24,6 +19,14 @@ class Api::BaseController < ApplicationController
       @token = Token.new auth_values[1]
     else
       @token = nil
+    end
+  end
+
+  def render_errors(object, status)
+    if object.is_a? String
+      render json: { errors: object }, status: status
+    else
+      render json: { errors: object.errors.full_messages }, status: status
     end
   end
 end

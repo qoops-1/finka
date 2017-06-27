@@ -10,7 +10,12 @@ Rails.application.routes.draw do
     resource :user, only: [:show, :update]
 
     resources :conversations, only: [:create, :index, :show] do
-      resources :transactions, only: :create
+      resources :transactions, only: [:create, :index]
     end
+
+    resources :transactions, only: :show
+    resources :transaction_verifications, only: :create
+    resource :qiwi_attach, only: [:show, :create]
+    resource :qiwi_payment, only: :create
   end
 end

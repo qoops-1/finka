@@ -3,23 +3,18 @@ class Api::ConversationsController < Api::BaseController
   before_action :set_conversation, only: [:show]
 
   def index
-    render json: current_user.conversations
+    @conversations = @user.conversations
   end
   
-  def show 
-    render json: @conversations
+  def show
+    unless @conversation.users.include? @user
+      render_errors("You are not a member of this conversation", :unauthorized)
+    end
   end
 
   def create
-    conversation = current_user.conversations.new conversation_params
-    if conversation.save
-      render json: conversation
-    else
-      render json: { 
-        errors: conversation.errors.full_messages, 
-        status: :unprocessable_entity 
-      }
-    end
+    @conversation = @user.conversations.new conversation_params
+    render_errors(@conversation, :unprocessable_entity) unless @conversation.save
   end
   
   private
@@ -29,6 +24,9 @@ class Api::ConversationsController < Api::BaseController
   end
 
   def conversation_params
-    params.permit(:title, user_ids: [])
+    {
+      user_ids: params[:user_phones].map { |phone| User.find_by(phone: phone)&.pluck(:id) },
+      title: params[:title]
+    }
   end
 end
