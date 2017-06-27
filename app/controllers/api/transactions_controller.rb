@@ -12,6 +12,7 @@ class Api::TransactionsController < Api::BaseController
 
   def create
     @transaction = @conversation.transactions.new transaction_params
+    @transaction.user = @user
     render_errors(@transaction, :unprocessable_entity) unless transaction.save
   end
 

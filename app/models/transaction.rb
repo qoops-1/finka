@@ -4,4 +4,6 @@ class Transaction < ApplicationRecord
   belongs_to :conversation
 
   enum type: [:charge, :pay]
+
+  default_scope { order(created_at: :asc) }
 end
