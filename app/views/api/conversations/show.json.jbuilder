@@ -1,6 +1,9 @@
-json.(@conversation, :title, :balance)
+json.conversation do
+  json.title @conversation.title(@user)
+  json.balance @conversation.balance(@user)
+end
 
-json.current_user_id @user.id
+json.user_id @user.id
 
 json.users @conversation.users do |user|
   json.id user.id

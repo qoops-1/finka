@@ -25,7 +25,9 @@ class Api::ConversationsController < Api::BaseController
 
   def conversation_params
     {
-      user_ids: params[:user_phones].map { |phone| User.find_by(phone: phone)&.pluck(:id) },
+      user_ids: params[:user_phones].map { |phone| User.find_by(phone: phone) }
+        &.pluck(:id)
+        .concat([@user.id]),
       title: params[:title]
     }
   end
