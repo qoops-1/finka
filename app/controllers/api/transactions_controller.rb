@@ -30,9 +30,6 @@ class Api::TransactionsController < Api::BaseController
   def send_messages
     receiver = User.find(params[:receiver_id])
     transaction = @transaction.to_json
-    Pusher.trigger("private-#{@user.phone}", 'new-transaction', {
-      transaction: transaction.to_json
-    })
 
     Pusher.trigger("private-#{receiver.phone}", 'new-transaction', {
       transaction: transaction.to_json
