@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     
     resource :registration, only: :create
     resource :session, only: [:create, :destroy]
+    resource :pusher_auth, only: :create
 
     resource :user, only: [:show, :update]
 

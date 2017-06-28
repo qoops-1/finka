@@ -14,7 +14,7 @@ class Api::TransactionsController < Api::BaseController
     @transaction = @conversation.transactions.new transaction_params
     @transaction.user = @user
     render_errors(@transaction, :unprocessable_entity) unless transaction.save
-    send_messages(user, receiver)
+    send_messages
   end
 
   private
@@ -30,7 +30,12 @@ class Api::TransactionsController < Api::BaseController
   def send_messages
     receiver = User.find(params[:receiver_id])
     transaction = @transaction.to_json
-    MessagesChannel.broadcast_to(@user, transaction: transaction)
-    MessagesChannel.broadcast_to(receiver, transaction: transaction)
+    Pusher.trigger("private-#{@user.phone}", 'new-transaction', {
+      transaction: transaction.to_json
+    })
+
+    Pusher.trigger("private-#{receiver.phone}", 'new-transaction', {
+      transaction: transaction.to_json
+    })
   end
 end
