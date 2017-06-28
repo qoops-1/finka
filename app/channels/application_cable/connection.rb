@@ -4,12 +4,13 @@ module ApplicationCable
 
     def connect
       self.current_user = find_verified_user
+      logger.add_tags 'ActionCable: ', current_user.id
     end
 
     private
 
     def find_verified_user
-      auth_values = params["token"]
+      auth_values = request&.params["token"]
       if !auth_values.nil?
         token = Token.new auth_values
       else
@@ -20,7 +21,7 @@ module ApplicationCable
         reject_unauthorized_connection  
       end
 
-      unless @token.payload[:verified]
+      unless token.payload[:verified]
         reject_unauthorized_connection
       end
 
