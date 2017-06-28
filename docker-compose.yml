@@ -21,7 +21,10 @@ services:
       - bbox:/box
 
   redis:
-    image: redis
+    image: 'redis'
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
 
 volumes:
   bbox:

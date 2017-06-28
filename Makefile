@@ -6,3 +6,5 @@ logs:
 	docker-compose logs -f
 down:
 	docker-compose down
+terminal:
+	docker-compose run web bash
