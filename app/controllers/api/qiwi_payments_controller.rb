@@ -9,9 +9,9 @@ class Api::QiwiPaymentsController < Api::BaseController
     @response = Qiwi.pay(sender, receiver, ammount, access_token)
     
     if @response == "200"
-      render json: "accepted", status: :ok
+      render json: { status: "accepted" }, status: :ok
     else
-      render json: "rejected", status: :bad_request
+      render json: { status: "rejected" }, status: :bad_request
     end
   end
 end

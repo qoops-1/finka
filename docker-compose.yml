@@ -14,11 +14,15 @@ services:
     depends_on:
       - db
       - box
+      - redis
 
   box:
     image: busybox
     volumes:
       - bbox:/box
+
+  redis:
+    image: redis
 
 volumes:
   bbox:
