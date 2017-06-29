@@ -3,7 +3,7 @@ class Api::RegistrationsController < Api::BaseController
 
   def create
     payload = if @user.nil?
-      { phone: params[:phone] }
+      { phone: @phone }
     else
       { user_id: @user.id }
     end
@@ -13,7 +13,12 @@ class Api::RegistrationsController < Api::BaseController
   private
 
   def find_user
-    @user = User.find_by(phone: params[:phone])
+    @phone = begin
+      Utils.format_phone(params[:phone])
+    rescue
+      render_errors("Не правильный номер", :unprocessable_entity)
+    end
+    @user = User.find_by(phone: @phone)
   end
 
   def user_params

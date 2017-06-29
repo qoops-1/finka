@@ -36,6 +36,8 @@ class Token
   end
 
   def generate_pin
-    rand(0000..9999).to_s.rjust(4, "0")
+    pin = rand(0000..9999).to_s.rjust(4, "0")
+    # Pin.send(pin, @payload[:phone])
+    pin
   end
 end
