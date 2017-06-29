@@ -4,7 +4,7 @@ class Api::BaseController < ApplicationController
 
   def authenticate_user!
     get_token
-    if !@token
+    if @token.nil?
       render_errors("No token in request", :unauthorized)
     elsif !@token.payload[:verified]
       render_errors("Token not verified", :unauthorized)
@@ -14,11 +14,15 @@ class Api::BaseController < ApplicationController
 
   def get_token
     # we accept Authorization=Bearer token
-    auth_values = request.headers["Authorization"]&.split(" ")
-    if !auth_values.nil? && auth_values[0] == "Bearer"
-      @token = Token.new auth_values[1]
+    p auth_values = request.headers["Authorization"]&.split(" ")
+    @token = if !auth_values.nil? && auth_values[0] == "Bearer"
+      begin
+        Token.new auth_values[1]
+      rescue
+        render_errors "Not valid token", :unauthorized
+      end
     else
-      @token = nil
+      nil
     end
   end
 
