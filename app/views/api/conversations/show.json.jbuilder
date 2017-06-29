@@ -1,4 +1,5 @@
 json.conversation do
+  json.id @conversation.id
   json.title @conversation.title(@user)
   json.balance @conversation.balance(@user)
 end
