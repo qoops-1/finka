@@ -8,9 +8,14 @@ class Conversation < ApplicationRecord
   validate :check_title
 
   def balance(user)
-    transactions = transactions&.select { |t| t.confirmed? }
+    # transactions = transactions&.select { |t| t.confirmed? }
     return 0 if transactions.nil?
-    income, outcome = transactions.partition { |t| t.pay? }
+
+    income = transactions.select { |t| t.charge? && t.user_id = user.id }
+    income = income.concat(transactions.select { |t| t.pay? && t.receiver_id == user.id})
+
+    outcome = transactions.select { |t| t.charge? && t.receiver_id == user.id}
+    outcome = outcome.concat(transactions.select { |t| t.pay? && t.user_id == user.id})
 
     income = income.map(&:ammount).reduce(:+)
     outcome = outcome.map(&:ammount).reduce(:+)

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     end
 
     resources :transactions, only: :show
-    resources :transaction_verifications, only: :create
+    resources :transaction_verifications, only: :update
     resource :qiwi_attach, only: [:show, :create]
     resource :qiwi_payment, only: :create
   end

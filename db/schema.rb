@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20170626194415) do
     t.integer  "conversation_id"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.integer  "type"
+    t.integer  "kind"
     t.decimal  "ammount",         precision: 9, scale: 2
     t.integer  "receiver_id"
     t.boolean  "verified"
