@@ -16,7 +16,8 @@ class Api::RegistrationsController < Api::BaseController
     @phone = begin
       Utils.format_phone(params[:phone])
     rescue
-      render_errors("Не правильный номер", :unprocessable_entity)
+     # render_errors("Не правильный номер", :unprocessable_entity)
+     params[:phone]
     end
     @user = User.find_by(phone: @phone)
   end
