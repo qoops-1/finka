@@ -44,8 +44,6 @@ class Qiwi
     request["accept-encoding"] = 'gzip, deflate, compress'
     request["user-agent"] = 'HTTPie/0.3.0'
     request.body = "{\n    \"fields\":{\n      \"account\":\"#{receiver}\",\n      \"prvld\":\"99\"\n    },\n    \"id\": \"#{DateTime.now.strftime('%Q')}\",\n    \"paymentMethod\": {\n      \"type\": \"Account\",\n      \"accountId\": \"643\"\n    },\n    \"sum\": {\n      \"amount\": \"#{amount}\",\n      \"currency\": \"643\"\n    }\n}"
-    p request.headers
-    p reguest.body
     http.request(request).code
   end
 end
