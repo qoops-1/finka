@@ -45,6 +45,7 @@ class Api::ConversationsController < Api::BaseController
           transactions: @conversation.transactions
         }
       })
+      puts "PUSHER: sent to: #{user.phone} conv: #{@conversation.id}}"
     end
   end
 end
