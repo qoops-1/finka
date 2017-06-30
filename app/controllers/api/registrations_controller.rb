@@ -3,8 +3,7 @@ class Api::RegistrationsController < Api::BaseController
 
   def create
     payload = { phone: @phone }
-    payloda[:user_id] = @user.id unless @user.nil?
-    end
+    payload[:user_id] = @user.id unless @user.nil?
     @token = Token.new payload
   end
 
@@ -14,7 +13,8 @@ class Api::RegistrationsController < Api::BaseController
     @phone = begin
       Utils.format_phone(params[:phone])
     rescue
-      render_errors("Не правильный номер", :unprocessable_entity)
+     # render_errors("Не правильный номер", :unprocessable_entity)
+     params[:phone]
     end
     @user = User.find_by(phone: @phone)
   end
