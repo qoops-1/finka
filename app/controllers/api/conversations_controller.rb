@@ -17,7 +17,6 @@ class Api::ConversationsController < Api::BaseController
   def create
     @conversation = @user.conversations.new conversation_params
     render_errors(@conversation, :unprocessable_entity) unless @conversation.save
-    send_notifications
   end
   
   private
@@ -38,7 +37,13 @@ class Api::ConversationsController < Api::BaseController
   def send_messages
     @conversation.users.each do |user|
       Pusher.trigger("private-#{user.phone}", "new-conversation", {
-        conversation: @conversation
+        user_id: user.id,
+        conversation: {
+          id: @conversation.id,
+          title: @conversation.title(user),
+          balance: @conversation.balance(user),
+          transactions: @conversation.transactions
+        }
       })
     end
   end
