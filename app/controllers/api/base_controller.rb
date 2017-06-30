@@ -1,13 +1,12 @@
 class Api::BaseController < ApplicationController
+  rescue_from SecurityError, with: :authentication_error
   
   protected
 
   def authenticate_user!
     get_token
-    if @token.nil?
-      render_errors("No token in request", :unauthorized)
-    elsif !@token.payload[:verified]
-      render_errors("Token not verified", :unauthorized)
+    unless @token.payload[:verified]
+      raise SecurityError.new 'Token is not verified'
     end
     @user = User.find @token.payload[:user_id]
   end
@@ -19,10 +18,10 @@ class Api::BaseController < ApplicationController
       begin
         Token.new auth_values[1]
       rescue
-        render_errors "Not valid token", :unauthorized
+        raise SecurityError.new 'Incorrect token provided'
       end
     else
-      nil
+      raise SecurityError.new 'No Token'
     end
   end
 
@@ -32,5 +31,9 @@ class Api::BaseController < ApplicationController
     else
       render json: { errors: object.errors.full_messages }, status: status
     end
+  end
+
+  def authentication_error(error)
+    render json: { errors: error }, status: :unauthorized
   end
 end
