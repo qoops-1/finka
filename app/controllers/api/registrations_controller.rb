@@ -2,10 +2,8 @@ class Api::RegistrationsController < Api::BaseController
   before_action :find_user, only: [:create, :update, :destroy]
 
   def create
-    payload = if @user.nil?
-      { phone: @phone }
-    else
-      { user_id: @user.id }
+    payload = { phone: @phone }
+    payloda[:user_id] = @user.id unless @user.nil?
     end
     @token = Token.new payload
   end
