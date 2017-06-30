@@ -2,7 +2,7 @@ class Api::ConversationsController < Api::BaseController
   before_action :authenticate_user!
   before_action :set_conversation, only: [:show]
 
-  after_action :send_messages, only: :create
+  # after_action :send_messages, only: :create
 
   def index
     @conversations = @user.conversations
@@ -27,7 +27,8 @@ class Api::ConversationsController < Api::BaseController
 
   def conversation_params
     {
-      user_ids: params[:user_phones].map { |phone| User.find_by(phone: phone) }
+      user_ids: params[:user_phones].map { |phone| Utils.format_phone(phone) }
+        .map { |phone| User.find_by(phone: phone) }
         &.pluck(:id)
         .concat([@user.id]),
       title: params[:title]

@@ -2,7 +2,7 @@ class Api::TransactionsController < Api::BaseController
   before_action :authenticate_user!
   before_action :set_conversation, only: [:index, :create]
   
-  after_action :send_messages, only: :create
+  # after_action :send_messages, only: :create
 
   def index
     @transactions = @conversation.transactions

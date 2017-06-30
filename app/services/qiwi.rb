@@ -26,7 +26,7 @@ class Qiwi
       code: code,
       vcode: pin
     }).body
-    p JSON.parse(body)
+    JSON.parse(body)
     JSON.parse(body)["access_token"]
   end
 
@@ -36,7 +36,7 @@ class Qiwi
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
     code_string = "#{sender}:#{access_token}"
-    p id = DateTime.now.strftime('%Q')
+    id = DateTime.now.strftime('%Q')
 
     request = Net::HTTP::Post.new(url)
     request["authorization"] = "Token #{Base64.encode64(code_string).strip}"
