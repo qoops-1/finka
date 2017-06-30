@@ -36,7 +36,7 @@ class Api::ConversationsController < Api::BaseController
 
   def send_messages
     @conversation.users.each do |user|
-      Pusher.trigger("private-#{user.phone}", "new-conversation", {
+      Pusher.trigger("#{user.phone}", "new-conversation", {
         user_id: user.id,
         conversation: {
           id: @conversation.id,
