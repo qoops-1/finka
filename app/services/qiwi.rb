@@ -36,6 +36,7 @@ class Qiwi
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
     code_string = "#{sender}:#{access_token}"
+    p id = DateTime.now.strftime('%Q')
 
     request = Net::HTTP::Post.new(url)
     request["authorization"] = "Token #{Base64.encode64(code_string).strip}"
@@ -43,7 +44,7 @@ class Qiwi
     request["accept"] = 'application/vnd.qiwi.v2+json'
     request["accept-encoding"] = 'gzip, deflate, compress'
     request["user-agent"] = 'HTTPie/0.3.0'
-    request.body = "{\n    \"fields\":{\n      \"account\":\"#{receiver}\",\n      \"prvld\":\"99\"\n    },\n    \"id\": \"#{DateTime.now.strftime('%Q')}\",\n    \"paymentMethod\": {\n      \"type\": \"Account\",\n      \"accountId\": \"643\"\n    },\n    \"sum\": {\n      \"amount\": \"#{amount}\",\n      \"currency\": \"643\"\n    }\n}"
+    request.body = "{\n    \"fields\":{\n      \"account\":\"#{receiver}\",\n      \"prvld\":\"99\"\n    },\n    \"id\": \"#{id}\",\n    \"paymentMethod\": {\n      \"type\": \"Account\",\n      \"accountId\": \"643\"\n    },\n    \"sum\": {\n      \"amount\": \"#{amount}\",\n      \"currency\": \"643\"\n    }\n}"
     http.request(request).code
   end
 end
