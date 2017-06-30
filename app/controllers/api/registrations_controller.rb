@@ -3,8 +3,7 @@ class Api::RegistrationsController < Api::BaseController
 
   def create
     payload = { phone: @phone }
-    payloda[:user_id] = @user.id unless @user.nil?
-    end
+    payload[:user_id] = @user.id unless @user.nil?
     @token = Token.new payload
   end
 
