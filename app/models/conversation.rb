@@ -11,11 +11,9 @@ class Conversation < ApplicationRecord
     # transactions = transactions&.select { |t| t.confirmed? }
     return 0 if transactions.nil?
 
-    income = transactions.select { |t| t.charge? && t.user_id = user.id }
-    income = income.concat(transactions.select { |t| t.pay? && t.receiver_id == user.id})
+    income = transactions.select { |t| t.receiver_id = user.id }
 
-    outcome = transactions.select { |t| t.charge? && t.receiver_id == user.id}
-    outcome = outcome.concat(transactions.select { |t| t.pay? && t.user_id == user.id})
+    outcome = transactions.select { |t| t.user_id == user.id}
 
     income = income.map(&:ammount).reduce(:+)
     outcome = outcome.map(&:ammount).reduce(:+)
