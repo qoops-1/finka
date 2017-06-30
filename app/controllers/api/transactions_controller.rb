@@ -1,6 +1,8 @@
 class Api::TransactionsController < Api::BaseController
   before_action :authenticate_user!
   before_action :set_conversation, only: [:index, :create]
+  
+  after_action :send_messages, only: :create
 
   def index
     @transactions = @conversation.transactions
@@ -14,7 +16,6 @@ class Api::TransactionsController < Api::BaseController
     @transaction = @conversation.transactions.new transaction_params
     @transaction.user = @user
     render_errors(@transaction, :unprocessable_entity) unless @transaction.save
-    send_messages
   end
 
   private
