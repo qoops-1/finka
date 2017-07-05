@@ -11,4 +11,10 @@ User.create!([{
 }, {
   phone: "79375879995",
   name: "Ilya"
+}, {
+  phone: "70000000000",
+  name: "Ilya"
+}, {
+  phone: "70000000001",
+  name: "Ilya"
 }])

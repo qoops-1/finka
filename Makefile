@@ -8,3 +8,5 @@ down:
 	docker-compose down
 terminal:
 	docker-compose run web bash
+rc:
+	docker-compose run web bin/rails c
