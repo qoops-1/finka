@@ -5,7 +5,9 @@ class Api::QiwiAttachesController < Api::BaseController
     pin = params[:pin]
     @token = get_token
     code = @token.payload[:qiwi_code]
-    qiwi_access_token = Qiwi.get_token(pin, code)
+    p "+++++++++++++++++++"
+    p qiwi_access_token = Qiwi.get_token(pin, code)
+    p "+++++++++++++++++++"
     @token.set qiwi_access_token: qiwi_access_token
   end
 
