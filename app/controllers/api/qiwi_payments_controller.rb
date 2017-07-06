@@ -6,7 +6,9 @@ class Api::QiwiPaymentsController < Api::BaseController
     sender = @user.phone
     ammount = params[:ammount]
     access_token = get_token.payload[:qiwi_access_token]
-    @response = Qiwi.pay(sender, receiver, ammount, access_token)
+    p "++++++++++++++++"
+    p @response = Qiwi.pay(sender, receiver, ammount, access_token)
+    p "++++++++++++++++"
     
     if @response == "200"
       render json: { status: "accepted" }, status: :ok
