@@ -5,9 +5,11 @@ class Api::QiwiAttachesController < Api::BaseController
     pin = params[:pin]
     @token = get_token
     code = @token.payload[:qiwi_code]
-    p "+++++++++++++++++++"
-    p qiwi_access_token = Qiwi.get_token(pin, code)
-    p "+++++++++++++++++++"
+    qiwi_access_token = Qiwi.get_token(pin, code)
+
+    if qiwi_access_token.nil?
+      render json: { errors: "Wrong pin" }, status: :bad_request
+    end
     @token.set qiwi_access_token: qiwi_access_token
   end
 
