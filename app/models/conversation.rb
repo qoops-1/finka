@@ -30,8 +30,8 @@ class Conversation < ApplicationRecord
 
   def title(user)
     return self[:title] if self[:title] || users.length > 2
-    contact = users.select { |u| u != user }[0] || users.first
-    contact&.name || contact.phone
+    contact = users.select { |u| u != user }[0]
+    contact.name || contact.phone
   end
 
   private
@@ -45,6 +45,7 @@ class Conversation < ApplicationRecord
   def conversation_exist
     if users.length == 2
       user_ids = users.map(&:id)
+        errors.add(:base, 'Conversation with self') if user_ids[0] == user_ids[1]
       conv_ids = Conversation
         .all
         .select { |c| c.users.count == 2 }
