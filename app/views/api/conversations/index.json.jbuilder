@@ -1,17 +1,9 @@
 json.conversations @conversations do |conv|
-  json.conversation do
-    json.id conv.id
-    json.title conv.title(@user)
-    json.balance conv.balance(@user)
-  end
 
-  json.user_id @user.id
+  json.id conv.id
+  json.balance conv.balance(@user)
 
-  json.users conv.users do |user|
-    json.id user.id
-    json.phone user.phone
-    json.name user.name
-  end
+  json.companions @conversation.users.select { |user| user.id != @user.id }
 
   json.transactions conv.transactions
 end
