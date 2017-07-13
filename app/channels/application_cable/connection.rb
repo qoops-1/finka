@@ -12,17 +12,13 @@ module ApplicationCable
     def find_verified_user
       auth_values = request&.params["token"]
       if !auth_values.nil?
-        token = Token.new auth_values
+        token = Token.new auth_values.split(" ")[1]
       else
         token = nil
       end
 
-      unless token
+      unless token && token.payload[:verified]
         reject_unauthorized_connection  
-      end
-
-      unless token.payload[:verified]
-        reject_unauthorized_connection
       end
 
       User.find token.payload[:user_id]

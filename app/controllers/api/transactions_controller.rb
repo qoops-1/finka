@@ -2,7 +2,7 @@ class Api::TransactionsController < Api::BaseController
   before_action :authenticate_user!
   before_action :set_conversation, only: [:index, :create]
   
-  # after_action :send_messages, only: :create
+  after_action :send_message, only: :create
 
   def index
     @transactions = @conversation.transactions
@@ -28,13 +28,9 @@ class Api::TransactionsController < Api::BaseController
     params.permit(:ammount, :kind, :receiver_id, :comment)
   end
 
-  def send_messages
+  def send_message
     receiver = User.find(params[:receiver_id])
     transaction = @transaction.to_json
-    phone = receiver.phone
-    Pusher.trigger("#{phone}", 'new-transaction', {
-      transaction: transaction
-    })
-    puts "PUSHER: sent to: #{phone} transaction: #{transaction}}"
+    MessagesChannel.broadcast_to(receiver, transaction)
   end
 end

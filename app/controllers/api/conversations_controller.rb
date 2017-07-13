@@ -2,7 +2,7 @@ class Api::ConversationsController < Api::BaseController
   before_action :authenticate_user!
   before_action :set_conversation, only: [:show]
 
-  # after_action :send_messages, only: :create
+  after_action :send_messages, only: :create
 
   def index
     @conversations = @user.conversations
@@ -37,16 +37,12 @@ class Api::ConversationsController < Api::BaseController
 
   def send_messages
     @conversation.users.each do |user|
-      Pusher.trigger("#{user.phone}", "new-conversation", {
-        user_id: user.id,
-        conversation: {
-          id: @conversation.id,
-          title: @conversation.title(user),
-          balance: @conversation.balance(user),
-          transactions: @conversation.transactions
-        }
-      })
-      puts "PUSHER: sent to: #{user.phone} conv: #{@conversation.id}}"
+      ChatsChannel.broadcast_to(user, build_message(user))
     end
+  end
+
+  def build_message(user)
+    ActionController::Base.new.view_context.render(partial: "api/conversations/create",
+     locals: {user: user, conversation: @conversation})
   end
 end
