@@ -37,6 +37,7 @@ class Api::ConversationsController < Api::BaseController
 
   def send_messages
     @conversation.users.each do |user|
+      next if user.id == @user.id
       ChatsChannel.broadcast_to(user, build_message(user))
     end
   end
